@@ -23,9 +23,13 @@
   "homepage": "https://github.com/taholton748/Tech_Talk#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "connect-session-sequelize": "^7.1.5",
+    "cookie": "^0.5.0",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-handlebars": "^6.0.6",
+    "express-session": "^1.17.3",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.20",
     "sequelize": "^6.25.3"

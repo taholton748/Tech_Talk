@@ -1,0 +1,26 @@
+<div>
+
+<form>
+    <div style="display: none;">
+        <input id="postId" value="{{post.id}}">
+    </div>
+    <div>
+        <label for="title">
+            Title
+        </label>
+        <input value="{{post.title}}" name="title" id="title">
+    </div>
+    <div>
+        <label for="link">
+            Post
+        </label>
+        <textarea type="text" name="link" id="link">{{post.post}}</textarea>
+    </div>
+    <div>
+        <button type="button" id="editPostBtn">Submit Edit</button>
+        <button type="button" id="deletePostBtn">Delete</button>
+    </div>
+</form>
+<script src="/javascript/edit.js"></script>
+{{!-- create a edit/delete js file to run your api delete and edit routes --}}
+</div>

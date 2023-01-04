@@ -1,4 +1,5 @@
 const router = require("express").Router();
+var cookie = require("cookie");
 const { User, Post, Comment } = require("../../models");
 
 // GET /api/users
@@ -6,7 +7,10 @@ router.get("/", (req, res) => {
   User.findAll({
     attributes: { exclude: ["password"] },
   })
-    .then((dbUserData) => res.json(dbUserData))
+    .then((dbUserData) => {
+      console.log("UserData: ", dbUserData);
+      res.json(dbUserData);
+    })
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
@@ -23,22 +27,22 @@ router.get("/:id", (req, res) => {
     include: [
       {
         model: Post,
-        attributes: ['id', 'title', 'post_url', 'created_at']
+        attributes: ["id", "title", "post_url", "created_at"],
       },
       // include the Comment model here:
       {
         model: Comment,
-        attributes: ['id', 'comment_text', 'created_at'],
+        attributes: ["id", "comment_text", "created_at"],
         include: {
           model: Post,
-          attributes: ['title']
-        }
+          attributes: ["title"],
+        },
       },
       {
         model: Post,
-        attributes: ['title']
-      }
-    ]
+        attributes: ["title"],
+      },
+    ],
   })
     .then((dbUserData) => {
       if (!dbUserData) {
@@ -61,7 +65,10 @@ router.post("/", (req, res) => {
     email: req.body.email,
     password: req.body.password,
   })
-    .then((dbUserData) => res.json(dbUserData))
+    .then((dbUserData) => {
+      req.session.userId = dbUserData?.id;
+    req.session.loggedIn= true;
+      res.json(dbUserData)})
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
@@ -69,12 +76,14 @@ router.post("/", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
+  console.log("first****",req.session)
   // expects {email: 'lernantino@gmail.com', password: 'password1234'}
   User.findOne({
     where: {
       email: req.body.email,
     },
   }).then((dbUserData) => {
+    console.log(dbUserData);
     if (!dbUserData) {
       res.status(400).json({ message: "No user with that email address!" });
       return;
@@ -87,6 +96,23 @@ router.post("/login", (req, res) => {
       res.status(400).json({ message: "Incorrect password" });
       return;
     }
+
+    // TODO: Hack
+    console.log("*****",req.session);
+    req.session.userId = dbUserData?.id;
+    req.session.loggedIn= true;
+
+    // Cookie Alternatives
+    // res.setHeader(
+    //   "Set-Cookie",
+    //   cookie.serialize("userId", `${dbUserData?.id}`, {
+    //     httpOnly: true,
+    //     secure: false,
+    //     sameSite: "strict",
+    //     path: "/",
+    //     maxAge: 60 * 60 * 24 * 7, // 1 week
+    //   })
+    // );
 
     res.json({ user: dbUserData, message: "You are now logged in!" });
   });
@@ -134,6 +160,18 @@ router.delete("/:id", (req, res) => {
       console.log(err);
       res.status(500).json(err);
     });
+});
+
+router.post("/logout", (req, res) => {
+  if (req.session.loggedIn) {
+    console.log("logging out");
+    req.session.destroy(err => {
+      if(err) return console.log("Error >>>", err);
+      res.status(204).end();
+    })
+  } else {
+    res.status(404).end();
+  }
 });
 
 module.exports = router;

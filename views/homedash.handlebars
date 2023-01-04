@@ -1,0 +1,18 @@
+<div>
+
+<header>
+    <h1>
+      <a href="/dashboard/new">New Post</a>
+    </h1>
+    <a href="/">Homepage</a>
+    <a href="/login">Login</a>
+    <a href="#" class="logout-btn">Logout</a>
+  </header>
+
+    <div>
+        <h2>Your Posts</h2>
+    {{#each posts}}
+    <a href="/dashboard/edit/{{id}}"><span>{{title}}</span></a>
+    {{/each}}
+    </div>
+</div>

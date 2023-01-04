@@ -6,6 +6,10 @@ function signupFormHandler(event) {
     const email = document.querySelector('#email-signup').value.trim();
     const password = document.querySelector('#password-signup').value.trim();
   
+    
+  
+    
+    
     if (username && email && password) {
       fetch('/api/users', {
         method: 'post',
@@ -15,7 +19,18 @@ function signupFormHandler(event) {
           password
         }),
         headers: { 'Content-Type': 'application/json' }
-      }).then((response) => {console.log(response)})
-    }
+      })
+      .then(data => {
+        console.log("Data: ", data);
+        document.location.replace("/dashboard");
+  
+        // if (data.user) {
+         
+        // } else {
+        //   alert(data.statusText);
+        // }
+      })
+      .catch(err => console.log(err))
+      }
   }
   signup.addEventListener('click', signupFormHandler);
