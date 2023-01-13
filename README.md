@@ -1,7 +1,7 @@
 # Tech_Talk Blog
   [![License Badge](https://img.shields.io/badge/license-MIT-blue)](https://choosealicense.com/licenses/mit/)
   ## Description
-  Website for developers to publish their blog posts and comment on other developers’ posts as well, writing about technical concepts, recent advancements, and new technologies <hr>
+  Website for developers to publish their blog posts and comment on other developers’ posts as well, writing about technical concepts, recent advancements, and new technologies. <hr>
   
   ## Table of Contents
   * [Installation](#installation)
